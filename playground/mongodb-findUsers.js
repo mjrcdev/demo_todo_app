@@ -1,7 +1,7 @@
 // MongoDB module v3
 const {MongoClient, ObjectID} = require('mongodb');
-
-MongoClient.connect('mongodb://localhost:27017/TodoApp', {useNewUrlParser: true}, (err, client) => {
+//connects to the Users database on the local server
+MongoClient.connect('mongodb://localhost:27017/Users', {useNewUrlParser: true}, (err, client) => {
 
   if (err) {
     return console.log('FAILURE: No connection to MongoDB Server');
@@ -18,11 +18,11 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', {useNewUrlParser: true}
   // });
 
   //uses the cursor count to count the and display the number of todos
-  db.collection('Users').find({location: 'New York'}).toArray().then((docs) => {
+  db.collection('Users').find({name: 'John'}).toArray().then((docs) => {
     console.log('Users');
     console.log(JSON.stringify(docs, undefined, 2));
     }, (err) => {
-  //   console.log('ERROR: Unable to connect to database', err);
+     console.log('ERROR: Unable to connect to database', err);
   });
   client.close();
 

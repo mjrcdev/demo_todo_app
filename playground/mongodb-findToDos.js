@@ -1,6 +1,6 @@
 // MongoDB module v3
 const {MongoClient, ObjectID} = require('mongodb');
-
+//connects to the TodoApp database on the local server
 MongoClient.connect('mongodb://localhost:27017/TodoApp', {useNewUrlParser: true}, (err, client) => {
 
   if (err) {
@@ -18,12 +18,12 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', {useNewUrlParser: true}
   // });
 
   //uses the cursor count to count the and display the number of todos
-  db.collection('Todos').find().count().then((count) => {
-    console.log('Total Todos in the database: ', ${count});
-  }, (err) => {
-    console.log('ERROR: Unable to determine number of todos. ', err);
+  db.collection('Todos').find({text: 'Write program'}).toArray().then((docs) => {
+    console.log('Todos');
+    console.log(JSON.stringify(docs, undefined, 2));
+    }, (err) => {
+     console.log('ERROR: Unable to display the todos.', err);
   });
-
   client.close();
 
 });
