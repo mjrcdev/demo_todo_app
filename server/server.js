@@ -24,3 +24,6 @@ app.post('/tasks', (req, res) => {
 app.listen(3000, () => {
   console.log('Application started on port 3000');
 });
+
+//need to export for testing
+module.exports = {app};
