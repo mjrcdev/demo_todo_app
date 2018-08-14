@@ -4,14 +4,12 @@ const request = require('supertest');
 const {app} = require('./../server');
 const {SmartTask} = require('./../models/smarttask');
 
-//populates database with test data
 const tasks = [{
-  text: 'Sample Task No. 1'
+  text: 'Smart Task One (1)'
 }, {
-  text: 'Sample Task No. 2'
+  text: 'Smart Task Two (2)'
 }];
 
-//clears the database
 beforeEach((done) => {
   SmartTask.remove({}).then(() => {
     return SmartTask.insertMany(tasks);
@@ -19,7 +17,7 @@ beforeEach((done) => {
 });
 
 describe('POST /tasks', () => {
-  it('should create a new smart task', (done) => {
+  it('Verification: SmartTask created.', (done) => {
     var text = 'Test smart task';
 
     request(app)
@@ -42,7 +40,7 @@ describe('POST /tasks', () => {
       });
   });
 
-  it('should not create a smart task with invalid data', (done) => {
+  it('Verification: SmartTask Data Input Validation', (done) => {
     request(app)
       .post('/tasks')
       .send({})
@@ -55,12 +53,12 @@ describe('POST /tasks', () => {
           expect(tasks.length).toBe(2);
           done();
         }).catch((e) => done(e));
-      });
+    });
   });
 });
 
 describe('GET /tasks', () => {
-  it('should get all the tasks in the database', (done) => {
+  it('Verification: Retrieve SmartTasks Database', (done) => {
     request(app)
       .get('/tasks')
       .expect(200)
