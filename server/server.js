@@ -20,6 +20,15 @@ app.post('/tasks', (req, res) => {
     res.status(400).send(e);
   });
 });
+//get all tasks
+app.get('/tasks', (req, res) => {
+  SmartTask.find().then((tasks) => {
+    res.send({tasks});
+  }, (e) => {
+    res.statue(400).send(e);
+  })
+});
+
 
 app.listen(3000, () => {
   console.log('Application started on port 3000');
