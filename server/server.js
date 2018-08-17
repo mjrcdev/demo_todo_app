@@ -52,6 +52,24 @@ app.get('/tasks/:id', (req, res) => {
   });
 });
 
+//delete function
+app.delete('/tasks/:id', (req, res) => {
+  var id = req.params.id;
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+  SmartTask.findByIdAndRemove(id).then((task) => {
+    if(!task) {
+      return res.status(404).send();
+    }
+
+    res.send(task);
+  }).catch((e) => {
+    res.status(400).send();
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Application is running on port ${port}`);
