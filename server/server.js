@@ -9,6 +9,7 @@ var {SmartTask} = require('./models/smarttask');
 var {AuthUser} = require('./models/authuser');
 
 var app = express();
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -52,8 +53,8 @@ app.get('/tasks/:id', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-  console.log('Application started on port 3000');
+app.listen(port, () => {
+  console.log(`Application is running on port ${port}`);
 });
 
 //need to export for testing
