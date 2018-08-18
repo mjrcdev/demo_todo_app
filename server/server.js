@@ -1,8 +1,7 @@
-
-var express = require('express');
-var bodyParser = require('body-parser');
-
-var {ObjectID} = require('mongodb');
+const _ = require('lodash');
+const express = require('express');
+const bodyParser = require('body-parser');
+const {ObjectID} = require('mongodb');
 
 var {mongoose} = require('./db/mongoose');
 var {SmartTask} = require('./models/smarttask');
@@ -52,24 +51,49 @@ app.get('/tasks/:id', (req, res) => {
   });
 });
 
-//delete function
+//delete function section
 app.delete('/tasks/:id', (req, res) => {
   var id = req.params.id;
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
-
   SmartTask.findByIdAndRemove(id).then((task) => {
     if(!task) {
       return res.status(404).send();
     }
-
     res.send({task});
   }).catch((e) => {
     res.status(400).send();
   });
 });
 
+//update route section
+
+  app.patch('/tasks/:id', (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['text', 'completed']);
+
+    if (!ObjectID.isValid(id)) {
+      return res.status(404).send();
+    }
+
+  if (_.isBoolean(body.completed) && body.completed) {
+    body.completedAt = new Date().getTime();
+  } else {
+    body.completed = false;
+    body.completedAt = null;
+  }
+
+  SmartTask.findByIdAndUpdate(id, {$set: body}, {new: true}).then((task) => {
+    if (!task) {
+      return res.status(404).send();
+    }
+
+    res.send({task});
+  }).catch((e) => {
+    res.status(400).send();
+  })
+});
 
 app.listen(port, () => {
   console.log(`Application is running on port ${port}`);
