@@ -8,6 +8,7 @@ const {ObjectID} = require('mongodb');
 var {mongoose} = require('./db/mongoose');
 var {SmartTask} = require('./models/smarttask');
 var {AuthUser} = require('./models/authuser');
+var {authenticate} = require('./middleware/authenticate');
 
 var app = express();
 const port = process.env.PORT;
@@ -109,6 +110,13 @@ app.post('/users', (req, res) => {
   }).catch((e) => {
     res.status(400).send(e);
   })
+});
+
+
+
+//08-21-18 private authenticated route
+app.get('/users/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 

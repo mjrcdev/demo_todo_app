@@ -55,6 +55,25 @@ AuthUserSchema.methods.generateAuthToken = function () {
   });
 };
 
+//08-21-18 Create AuthUserSchema
+AuthUserSchema.statics.findByToken = function (token) {
+  //variable for the model itself
+  var AuthUser = this;
+  var decoded;
+
+  try {
+    decoded = jwt.verify(token, 'n0d3d3v3l0pm3nt!@#');
+  } catch (e) {
+    return Promise.reject();
+  }
+
+  return AuthUser.findOne({
+    '_id': decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
+};
+
 var AuthUser = mongoose.model('AuthUser', AuthUserSchema);
 
 module.exports = {AuthUser};
